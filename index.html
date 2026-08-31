@@ -1,0 +1,2973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="PixelCSS 2.1 — AI Screenshot to HTML/CSS">
+<title>PixelCSS 2.1 — KILLERDUTCH</title>
+
+<style>
+:root{
+    --bg:#07080c;
+    --panel:#101219;
+    --panel2:#151821;
+    --border:#292e3a;
+    --text:#f5f7fb;
+    --muted:#858da0;
+    --accent:#8b5cf6;
+    --accent2:#a78bfa;
+    --green:#72d6a3;
+    --red:#f87171;
+}
+
+*{box-sizing:border-box}
+
+html{scroll-behavior:smooth}
+
+body{
+    margin:0;
+    min-height:100vh;
+    background:
+        radial-gradient(
+            circle at 50% -10%,
+            #241844 0,
+            #0a0b10 35%,
+            #07080c 70%
+        );
+    color:var(--text);
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+button,input,select{font:inherit}
+button{cursor:pointer}
+
+.hidden{display:none!important}
+
+.app{
+    width:min(1500px,calc(100% - 28px));
+    margin:auto;
+    padding:24px 0 40px;
+}
+
+/* HEADER */
+
+header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    margin-bottom:18px;
+}
+
+.logo{
+    font-size:25px;
+    font-weight:900;
+    letter-spacing:-1.5px;
+}
+
+.logo span{color:var(--accent2)}
+
+.version{
+    display:inline-block;
+    margin-left:7px;
+    padding:3px 7px;
+    border:1px solid #ffffff18;
+    border-radius:999px;
+    color:#aaa;
+    font-size:9px;
+    letter-spacing:0;
+}
+
+.creator{
+    margin-top:3px;
+    color:var(--muted);
+    font-size:10px;
+}
+
+.header-right{
+    color:var(--muted);
+    text-align:right;
+    font-size:10px;
+    line-height:1.6;
+}
+
+/* GRID */
+
+.main{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 390px;
+    gap:16px;
+}
+
+/* PANEL */
+
+.panel{
+    overflow:hidden;
+    border:1px solid var(--border);
+    border-radius:15px;
+    background:#0f1117ee;
+    box-shadow:0 22px 75px #0008;
+}
+
+.panel-title{
+    padding:13px 15px;
+    border-bottom:1px solid var(--border);
+    font-weight:800;
+}
+
+/* BUTTONS */
+
+.toolbar{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:7px;
+    padding:11px;
+    border-bottom:1px solid var(--border);
+}
+
+.btn{
+    padding:8px 11px;
+    border:1px solid #303644;
+    border-radius:8px;
+    background:#181c25;
+    color:white;
+    transition:.15s;
+}
+
+.btn:hover{
+    border-color:#7660ad;
+    transform:translateY(-1px);
+}
+
+.btn.primary{
+    background:var(--accent);
+    border-color:var(--accent);
+}
+
+.btn.ai{
+    background:#21143d;
+    border-color:#6542a5;
+}
+
+.btn:disabled{
+    opacity:.4;
+    cursor:not-allowed;
+    transform:none;
+}
+
+.status{
+    margin-left:auto;
+    color:var(--muted);
+    font-size:10px;
+}
+
+/* STAGE */
+
+.stage{
+    min-height:610px;
+    padding:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#090b10;
+}
+
+.drop{
+    width:min(100%,760px);
+    min-height:460px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    border:1px dashed #454b5a;
+    border-radius:13px;
+    color:var(--muted);
+    transition:.2s;
+}
+
+.drop.over{
+    border-color:var(--accent2);
+    background:#151022;
+}
+
+.drop b{
+    display:block;
+    margin-bottom:6px;
+    color:white;
+    font-size:18px;
+}
+
+.drop small{
+    display:block;
+    margin-top:10px;
+    font-size:10px;
+}
+
+#preview{
+    display:none;
+    max-width:100%;
+    max-height:650px;
+    object-fit:contain;
+    border-radius:5px;
+    box-shadow:0 20px 60px #000;
+}
+
+/* ANALYSIS */
+
+.analysis{
+    padding:14px;
+}
+
+.metric{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    padding:8px 0;
+    border-bottom:1px solid #20242d;
+    font-size:11px;
+}
+
+.metric span{color:var(--muted)}
+.metric strong{text-align:right}
+
+.section{
+    margin:18px 0 8px;
+    color:var(--muted);
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+}
+
+.badges{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+}
+
+.badge{
+    padding:5px 8px;
+    border:1px solid #ffffff12;
+    border-radius:999px;
+    background:#171a22;
+    color:#cbd0dc;
+    font-size:9px;
+}
+
+.palette{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:6px;
+}
+
+.swatch{
+    height:43px;
+    position:relative;
+    border:1px solid #fff2;
+    border-radius:7px;
+}
+
+.swatch span{
+    position:absolute;
+    left:3px;
+    right:3px;
+    bottom:3px;
+    padding:2px;
+    overflow:hidden;
+    border-radius:3px;
+    background:#000b;
+    color:white;
+    text-align:center;
+    font-size:8px;
+}
+
+.detections{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+}
+
+.detect{
+    padding:9px;
+    border:1px solid #252a34;
+    border-radius:8px;
+    background:var(--panel2);
+    font-size:9px;
+}
+
+.detect strong{
+    display:block;
+    margin-bottom:3px;
+    color:white;
+    font-size:11px;
+}
+
+.notice{
+    margin-top:13px;
+    padding:10px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    background:#0c0f15;
+    color:var(--muted);
+    font-size:9px;
+    line-height:1.65;
+}
+
+/* CODE */
+
+.code-panel{
+    margin-top:16px;
+}
+
+.tabs{
+    display:flex;
+    align-items:center;
+    border-bottom:1px solid var(--border);
+}
+
+.tab{
+    flex:1;
+    border:0;
+    padding:11px;
+    background:transparent;
+    color:var(--muted);
+}
+
+.tab.active{
+    color:white;
+    border-bottom:2px solid var(--accent2);
+}
+
+.copy{
+    margin:5px;
+}
+
+pre{
+    min-height:360px;
+    max-height:650px;
+    overflow:auto;
+    margin:0;
+    padding:16px;
+    background:#080a0f;
+    color:#d9ddef;
+    font:12px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;
+    white-space:pre-wrap;
+}
+
+/* OUTPUT */
+
+.output{
+    margin-top:16px;
+}
+
+.output-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:11px 13px;
+    border-bottom:1px solid var(--border);
+}
+
+iframe{
+    display:block;
+    width:100%;
+    height:480px;
+    border:0;
+    background:white;
+}
+
+/* AI LOADER */
+
+.ai-progress{
+    height:4px;
+    margin-top:8px;
+    overflow:hidden;
+    border-radius:10px;
+    background:#1b1e27;
+}
+
+.ai-progress div{
+    width:0%;
+    height:100%;
+    background:var(--accent2);
+    transition:width:.3s;
+}
+
+/* FOOTER */
+
+footer{
+    margin-top:18px;
+    color:#606879;
+    text-align:center;
+    font-size:9px;
+}
+
+footer b{color:#9ba2b2}
+
+@media(max-width:900px){
+    .main{grid-template-columns:1fr}
+    .header-right{display:none}
+}
+
+@media(max-width:600px){
+    .app{width:calc(100% - 16px)}
+    .stage{min-height:470px}
+    .detections{grid-template-columns:1fr}
+    .palette{grid-template-columns:repeat(2,1fr)}
+    .status{width:100%;margin-left:0}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+    <div>
+        <div class="logo">
+            Pixel<span>CSS</span>
+            <span class="version">2.1 AI</span>
+        </div>
+
+        <div class="creator">
+            Created by KILLERDUTCH
+        </div>
+    </div>
+
+    <div class="header-right">
+        Screenshot → AI → HTML/CSS<br>
+        Browser-side Vision + OCR
+    </div>
+</header>
+
+
+<div class="main">
+
+<!-- IMAGE -->
+
+<section class="panel">
+
+<div class="toolbar">
+
+    <button
+        class="btn primary"
+        id="uploadBtn">
+        Upload Screenshot
+    </button>
+
+    <button
+        class="btn"
+        id="analyzeBtn"
+        disabled>
+        Analyze
+    </button>
+
+    <button
+        class="btn ai"
+        id="aiBtn"
+        disabled>
+        🤖 Run AI
+    </button>
+
+    <button
+        class="btn"
+        id="resetBtn">
+        Reset
+    </button>
+
+    <input
+        id="fileInput"
+        type="file"
+        accept="image/*"
+        class="hidden">
+
+    <div
+        class="status"
+        id="status">
+        No image selected
+    </div>
+
+</div>
+
+
+<div class="stage">
+
+    <div
+        class="drop"
+        id="drop">
+
+        <div>
+
+            <b>
+                Drop your screenshot here
+            </b>
+
+            <div>
+                or click Upload Screenshot
+            </div>
+
+            <small>
+                PNG · JPG · WEBP
+            </small>
+
+        </div>
+
+    </div>
+
+    <img
+        id="preview"
+        alt="Screenshot">
+
+</div>
+
+</section>
+
+
+<!-- ANALYSIS -->
+
+<aside class="panel">
+
+<div class="panel-title">
+    PixelCSS Intelligence
+</div>
+
+<div
+    class="analysis"
+    id="analysis">
+
+    <div class="notice">
+        Upload a screenshot to start
+        PixelCSS.
+        <br><br>
+        The analyzer works locally in
+        your browser.
+    </div>
+
+</div>
+
+</aside>
+
+</div>
+
+
+<!-- CODE -->
+
+<section class="panel code-panel">
+
+<div class="tabs">
+
+    <button
+        class="tab active"
+        data-tab="html">
+        HTML
+    </button>
+
+    <button
+        class="tab"
+        data-tab="css">
+        CSS
+    </button>
+
+    <button
+        class="tab"
+        data-tab="json">
+        AI JSON
+    </button>
+
+    <button
+        class="tab"
+        data-tab="combined">
+        Combined
+    </button>
+
+    <button
+        class="btn copy"
+        id="copyBtn">
+        Copy
+    </button>
+
+</div>
+
+<pre id="code">// Upload and analyze a screenshot.</pre>
+
+</section>
+
+
+<!-- PREVIEW -->
+
+<section class="panel output">
+
+<div class="output-bar">
+
+    <strong>
+        Generated Interface
+    </strong>
+
+    <button
+        class="btn"
+        id="openBtn">
+        Open
+    </button>
+
+</div>
+
+<iframe
+    id="frame"
+    title="Generated UI">
+</iframe>
+
+</section>
+
+
+<footer>
+    PixelCSS 2.1 ·
+    <b>KILLERDUTCH</b>
+</footer>
+
+</div>
+
+
+<script type="module">
+
+/*
+=========================================================
+ PIXELCSS 2.1
+ Browser AI Screenshot Analyzer
+ Created by KILLERDUTCH
+=========================================================
+*/
+
+
+/* =====================================================
+   TRANSFORMERS.JS
+===================================================== */
+
+import {
+    pipeline,
+    env
+} from "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1";
+
+
+env.allowLocalModels = false;
+env.useBrowserCache = true;
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const $ = id =>
+    document.getElementById(id);
+
+const uploadBtn = $("uploadBtn");
+const analyzeBtn = $("analyzeBtn");
+const aiBtn = $("aiBtn");
+const resetBtn = $("resetBtn");
+const fileInput = $("fileInput");
+const drop = $("drop");
+const preview = $("preview");
+const status = $("status");
+const analysis = $("analysis");
+const code = $("code");
+const copyBtn = $("copyBtn");
+const frame = $("frame");
+const openBtn = $("openBtn");
+
+
+/* =====================================================
+   STATE
+===================================================== */
+
+let image = null;
+let imageURL = null;
+
+let result = null;
+
+let vision = null;
+let ocr = null;
+
+let activeTab = "html";
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+function setStatus(text){
+    status.textContent = text;
+}
+
+
+/* =====================================================
+   UPLOAD
+===================================================== */
+
+uploadBtn.onclick = () =>
+    fileInput.click();
+
+
+fileInput.onchange = e => {
+
+    const file =
+        e.target.files[0];
+
+    if(file)
+        loadImage(file);
+
+};
+
+
+/* =====================================================
+   DRAG DROP
+===================================================== */
+
+[
+    "dragenter",
+    "dragover"
+].forEach(event => {
+
+    drop.addEventListener(
+        event,
+        e => {
+
+            e.preventDefault();
+
+            drop.classList.add("over");
+
+        }
+    );
+
+});
+
+
+[
+    "dragleave",
+    "drop"
+].forEach(event => {
+
+    drop.addEventListener(
+        event,
+        e => {
+
+            e.preventDefault();
+
+            drop.classList.remove("over");
+
+        }
+    );
+
+});
+
+
+drop.addEventListener(
+    "drop",
+    e => {
+
+        const file =
+            e.dataTransfer.files[0];
+
+        if(file)
+            loadImage(file);
+
+    }
+);
+
+
+/* =====================================================
+   LOAD IMAGE
+===================================================== */
+
+function loadImage(file){
+
+    if(!file.type.startsWith("image/")){
+
+        setStatus(
+            "Invalid image"
+        );
+
+        return;
+
+    }
+
+
+    if(imageURL)
+        URL.revokeObjectURL(imageURL);
+
+
+    imageURL =
+        URL.createObjectURL(file);
+
+
+    image =
+        new Image();
+
+
+    image.onload = () => {
+
+        preview.src =
+            imageURL;
+
+        preview.style.display =
+            "block";
+
+        drop.style.display =
+            "none";
+
+        analyzeBtn.disabled =
+            false;
+
+        aiBtn.disabled =
+            false;
+
+        setStatus(
+            `${image.naturalWidth} × ${image.naturalHeight}`
+        );
+
+    };
+
+
+    image.src =
+        imageURL;
+
+}
+
+
+/* =====================================================
+   CANVAS
+===================================================== */
+
+function canvasFromImage(){
+
+    const max = 900;
+
+    const scale =
+        Math.min(
+            1,
+            max / image.naturalWidth
+        );
+
+    const canvas =
+        document.createElement("canvas");
+
+    canvas.width =
+        Math.max(
+            1,
+            Math.round(
+                image.naturalWidth *
+                scale
+            )
+        );
+
+    canvas.height =
+        Math.max(
+            1,
+            Math.round(
+                image.naturalHeight *
+                scale
+            )
+        );
+
+    const ctx =
+        canvas.getContext(
+            "2d",
+            {
+                willReadFrequently:true
+            }
+        );
+
+    ctx.drawImage(
+        image,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    return canvas;
+
+}
+
+
+/* =====================================================
+   COLOR
+===================================================== */
+
+function rgbHex(r,g,b){
+
+    return "#" +
+        [r,g,b]
+        .map(x =>
+            Math.max(
+                0,
+                Math.min(
+                    255,
+                    Math.round(x)
+                )
+            )
+            .toString(16)
+            .padStart(2,"0")
+        )
+        .join("");
+
+}
+
+
+function luminance(r,g,b){
+
+    return (
+        r * .299 +
+        g * .587 +
+        b * .114
+    );
+
+}
+
+
+function colorDistance(a,b){
+
+    return Math.sqrt(
+        Math.pow(a[0]-b[0],2) +
+        Math.pow(a[1]-b[1],2) +
+        Math.pow(a[2]-b[2],2)
+    );
+
+}
+
+
+/* =====================================================
+   PALETTE
+===================================================== */
+
+function extractPalette(data){
+
+    const map =
+        new Map();
+
+    for(
+        let i=0;
+        i<data.length;
+        i+=4
+    ){
+
+        if(data[i+3] < 100)
+            continue;
+
+
+        const r =
+            Math.round(data[i]/16)*16;
+
+        const g =
+            Math.round(data[i+1]/16)*16;
+
+        const b =
+            Math.round(data[i+2]/16)*16;
+
+
+        const key =
+            `${r},${g},${b}`;
+
+
+        map.set(
+            key,
+            (map.get(key)||0)+1
+        );
+
+    }
+
+
+    return [...map.entries()]
+        .sort(
+            (a,b)=>b[1]-a[1]
+        )
+        .slice(0,10)
+        .map(([key,count])=>{
+
+            const [
+                r,
+                g,
+                b
+            ] =
+                key.split(",")
+                   .map(Number);
+
+            return {
+                hex:rgbHex(r,g,b),
+                rgb:[r,g,b],
+                count
+            };
+
+        });
+
+}
+
+
+/* =====================================================
+   AVERAGE
+===================================================== */
+
+function averageColor(data){
+
+    let r=0;
+    let g=0;
+    let b=0;
+    let n=0;
+
+
+    for(
+        let i=0;
+        i<data.length;
+        i+=4
+    ){
+
+        if(data[i+3]<100)
+            continue;
+
+        r+=data[i];
+        g+=data[i+1];
+        b+=data[i+2];
+
+        n++;
+
+    }
+
+
+    if(!n)
+        return "#000000";
+
+
+    return rgbHex(
+        r/n,
+        g/n,
+        b/n
+    );
+
+}
+
+
+/* =====================================================
+   CONTRAST
+===================================================== */
+
+function calculateContrast(data){
+
+    let min=255;
+    let max=0;
+
+    const step =
+        Math.max(
+            4,
+            Math.floor(
+                data.length /
+                50000
+            )*4
+        );
+
+
+    for(
+        let i=0;
+        i<data.length;
+        i+=step
+    ){
+
+        const l =
+            luminance(
+                data[i],
+                data[i+1],
+                data[i+2]
+            );
+
+        min=Math.min(min,l);
+        max=Math.max(max,l);
+
+    }
+
+
+    return Math.round(
+        max-min
+    );
+
+}
+
+
+/* =====================================================
+   PIXEL GRID ANALYSIS
+===================================================== */
+
+function geometry(
+    data,
+    width,
+    height
+){
+
+    const rows=[];
+    const cols=[];
+
+
+    const sy =
+        Math.max(
+            2,
+            Math.floor(height/100)
+        );
+
+
+    const sx =
+        Math.max(
+            2,
+            Math.floor(width/100)
+        );
+
+
+    function lum(x,y){
+
+        x=Math.max(
+            0,
+            Math.min(
+                width-1,
+                x
+            )
+        );
+
+        y=Math.max(
+            0,
+            Math.min(
+                height-1,
+                y
+            )
+        );
+
+
+        const i =
+            (y*width+x)*4;
+
+
+        return luminance(
+            data[i],
+            data[i+1],
+            data[i+2]
+        );
+
+    }
+
+
+    for(
+        let y=0;
+        y<height;
+        y+=sy
+    ){
+
+        let score=0;
+
+
+        for(
+            let x=2;
+            x<width-2;
+            x+=5
+        ){
+
+            if(
+                Math.abs(
+                    lum(x,y) -
+                    lum(x+2,y)
+                ) > 35
+            ){
+
+                score++;
+
+            }
+
+        }
+
+
+        rows.push({
+            y,
+            score
+        });
+
+    }
+
+
+    for(
+        let x=0;
+        x<width;
+        x+=sx
+    ){
+
+        let score=0;
+
+
+        for(
+            let y=2;
+            y<height-2;
+            y+=5
+        ){
+
+            if(
+                Math.abs(
+                    lum(x,y) -
+                    lum(x,y+2)
+                ) > 35
+            ){
+
+                score++;
+
+            }
+
+        }
+
+
+        cols.push({
+            x,
+            score
+        });
+
+    }
+
+
+    return {
+        rows,
+        cols
+    };
+
+}
+
+
+/* =====================================================
+   LAYOUT
+===================================================== */
+
+function inferLayout(
+    geo,
+    width,
+    height
+){
+
+    const horizontal =
+        geo.rows.filter(
+            x =>
+                x.score >
+                width/100
+        );
+
+    const vertical =
+        geo.cols.filter(
+            x =>
+                x.score >
+                height/100
+        );
+
+
+    let type="centered";
+    let confidence=55;
+
+
+    if(
+        vertical.length >= 4
+    ){
+
+        type="multi-column";
+        confidence=78;
+
+    }
+    else if(
+        horizontal.length >= 5
+    ){
+
+        type="stacked";
+        confidence=75;
+
+    }
+    else if(
+        vertical.length >= 2
+    ){
+
+        type="sidebar / content";
+        confidence=70;
+
+    }
+
+
+    return {
+        type,
+        confidence,
+        horizontalChanges:
+            horizontal.length,
+        verticalChanges:
+            vertical.length
+    };
+
+}
+
+
+/* =====================================================
+   RADIUS
+===================================================== */
+
+function estimateRadius(){
+
+    const ratio =
+        result.geometry.rows.length /
+        Math.max(
+            1,
+            result.height
+        ) *
+        100;
+
+
+    if(ratio>5)
+        return 16;
+
+    if(ratio>2)
+        return 12;
+
+    return 8;
+
+}
+
+
+/* =====================================================
+   ELEMENT HEURISTICS
+===================================================== */
+
+function detectElements(){
+
+    const list=[];
+
+    const layout =
+        result.layout;
+
+
+    list.push({
+        type:"header",
+        confidence:
+            Math.min(
+                95,
+                55+
+                result.geometry.rows.length
+            )
+    });
+
+
+    if(
+        layout.type ===
+        "sidebar / content"
+    ){
+
+        list.push({
+            type:"sidebar",
+            confidence:76
+        });
+
+    }
+
+
+    if(
+        result.geometry.rows.length>=3
+    ){
+
+        list.push({
+            type:"card",
+            confidence:78
+        });
+
+    }
+
+
+    if(
+        result.palette.length>=2
+    ){
+
+        list.push({
+            type:"button",
+            confidence:67
+        });
+
+    }
+
+
+    list.push({
+        type:"text",
+        confidence:82
+    });
+
+
+    return list;
+
+}
+
+
+/* =====================================================
+   NORMAL ANALYSIS
+===================================================== */
+
+analyzeBtn.onclick =
+    analyze;
+
+
+/* =====================================================
+   ANALYZE
+===================================================== */
+
+function analyze(){
+
+    if(!image)
+        return;
+
+
+    setStatus(
+        "Analyzing pixels..."
+    );
+
+
+    const canvas =
+        canvasFromImage();
+
+
+    const ctx =
+        canvas.getContext(
+            "2d",
+            {
+                willReadFrequently:true
+            }
+        );
+
+
+    const data =
+        ctx.getImageData(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        ).data;
+
+
+    const palette =
+        extractPalette(data);
+
+
+    result={
+
+        width:
+            canvas.width,
+
+        height:
+            canvas.height,
+
+        originalWidth:
+            image.naturalWidth,
+
+        originalHeight:
+            image.naturalHeight,
+
+        palette,
+
+        average:
+            averageColor(data),
+
+        contrast:
+            calculateContrast(data),
+
+        geometry:
+            geometry(
+                data,
+                canvas.width,
+                canvas.height
+            )
+
+    };
+
+
+    result.layout =
+        inferLayout(
+            result.geometry,
+            result.width,
+            result.height
+        );
+
+
+    result.radius =
+        estimateRadius();
+
+
+    result.elements =
+        detectElements();
+
+
+    result.vision=[];
+    result.ocr=[];
+
+
+    renderAnalysis();
+
+    generate();
+
+
+    setStatus(
+        "Pixel analysis complete"
+    );
+
+}
+
+
+/* =====================================================
+   LOAD VISION
+===================================================== */
+
+async function loadVision(){
+
+    if(vision)
+        return vision;
+
+
+    setStatus(
+        "Downloading Vision AI..."
+    );
+
+
+    vision =
+        await pipeline(
+            "object-detection",
+            "Xenova/detr-resnet-50",
+            {
+                device:"wasm",
+                dtype:"q8"
+            }
+        );
+
+
+    return vision;
+
+}
+
+
+/* =====================================================
+   LOAD OCR
+===================================================== */
+
+async function loadOCR(){
+
+    if(ocr)
+        return ocr;
+
+
+    setStatus(
+        "Downloading OCR AI..."
+    );
+
+
+    ocr =
+        await pipeline(
+            "image-to-text",
+            "Xenova/trocr-small-printed",
+            {
+                device:"wasm",
+                dtype:"q8"
+            }
+        );
+
+
+    return ocr;
+
+}
+
+
+/* =====================================================
+   RUN AI
+===================================================== */
+
+aiBtn.onclick =
+    runAI;
+
+
+async function runAI(){
+
+    if(!image)
+        return;
+
+
+    aiBtn.disabled=true;
+
+
+    try{
+
+        setStatus(
+            "Loading Vision AI..."
+        );
+
+
+        const detector =
+            await loadVision();
+
+
+        setStatus(
+            "Vision AI analyzing..."
+        );
+
+
+        const detections =
+            await detector(
+                image,
+                {
+                    threshold:.30
+                }
+            );
+
+
+        result.vision =
+            detections.map(
+                item=>({
+
+                    label:item.label,
+
+                    score:
+                        Math.round(
+                            item.score*100
+                        ),
+
+                    box:item.box
+
+                })
+            );
+
+
+        /*
+        OCR is intentionally run separately.
+        TrOCR works best when supplied a
+        cropped text region. We use detected
+        regions as candidates where possible.
+        */
+
+        setStatus(
+            "Loading OCR AI..."
+        );
+
+
+        const reader =
+            await loadOCR();
+
+
+        /*
+        Run OCR on the complete image
+        as a baseline.
+        */
+
+        const text =
+            await reader(
+                image,
+                {
+                    max_new_tokens:64
+                }
+            );
+
+
+        result.ocr =
+            text
+            .map(
+                x =>
+                    x.generated_text
+            )
+            .filter(
+                x =>
+                    x &&
+                    x.trim()
+            );
+
+
+        renderAnalysis();
+
+        generate();
+
+
+        setStatus(
+            `AI complete · ${result.vision.length} objects`
+        );
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        setStatus(
+            "AI error — check console"
+        );
+
+        alert(
+            "AI could not be loaded or executed.\n\n"+
+            error.message
+        );
+
+    }
+    finally{
+
+        aiBtn.disabled=false;
+
+    }
+
+}
+
+
+/* =====================================================
+   ANALYSIS UI
+===================================================== */
+
+function renderAnalysis(){
+
+    if(!result)
+        return;
+
+
+    const vision =
+        result.vision || [];
+
+
+    const ocrText =
+        result.ocr || [];
+
+
+    analysis.innerHTML=`
+
+        <div class="metric">
+            <span>Image</span>
+            <strong>
+                ${result.originalWidth}
+                ×
+                ${result.originalHeight}
+            </strong>
+        </div>
+
+        <div class="metric">
+            <span>Analysis</span>
+            <strong>
+                ${result.width}
+                ×
+                ${result.height}
+            </strong>
+        </div>
+
+        <div class="metric">
+            <span>Average</span>
+            <strong>
+                ${result.average}
+            </strong>
+        </div>
+
+        <div class="metric">
+            <span>Contrast</span>
+            <strong>
+                ${result.contrast}
+            </strong>
+        </div>
+
+
+        <div class="section">
+            Layout
+        </div>
+
+        <div class="badges">
+
+            <span class="badge">
+                ${result.layout.type}
+            </span>
+
+            <span class="badge">
+                ${result.layout.confidence}%
+            </span>
+
+            <span class="badge">
+                ${result.radius}px radius
+            </span>
+
+        </div>
+
+
+        <div class="section">
+            Dominant Colors
+        </div>
+
+        <div class="palette">
+
+            ${
+                result.palette
+                .map(
+                    color=>`
+
+                    <div
+                        class="swatch"
+                        style="
+                            background:${color.hex}
+                        "
+                        title="${color.hex}">
+
+                        <span>
+                            ${color.hex}
+                        </span>
+
+                    </div>
+
+                    `
+                )
+                .join("")
+            }
+
+        </div>
+
+
+        <div class="section">
+            Pixel Detection
+        </div>
+
+        <div class="detections">
+
+            ${
+                result.elements
+                .map(
+                    x=>`
+
+                    <div class="detect">
+
+                        <strong>
+                            ${x.type}
+                        </strong>
+
+                        Confidence:
+                        ${x.confidence}%
+
+                    </div>
+
+                    `
+                )
+                .join("")
+            }
+
+        </div>
+
+
+        ${
+            vision.length
+            ?`
+
+            <div class="section">
+                Vision AI
+            </div>
+
+            <div class="detections">
+
+                ${
+                    vision
+                    .slice(0,12)
+                    .map(
+                        x=>`
+
+                        <div class="detect">
+
+                            <strong>
+                                ${escapeHTML(x.label)}
+                            </strong>
+
+                            Confidence:
+                            ${x.score}%
+
+                        </div>
+
+                        `
+                    )
+                    .join("")
+                }
+
+            </div>
+
+            `
+            :""
+        }
+
+
+        ${
+            ocrText.length
+            ?`
+
+            <div class="section">
+                OCR
+            </div>
+
+            <div class="notice">
+
+                ${
+                    ocrText
+                    .map(
+                        x =>
+                            escapeHTML(x)
+                    )
+                    .join("<br>")
+                }
+
+            </div>
+
+            `
+            :""
+        }
+
+
+        <div class="notice">
+
+            <b>PixelCSS AI</b><br>
+
+            Pixel analysis +
+            browser-side Vision AI +
+            OCR are combined to create
+            an editable HTML/CSS starting point.
+
+        </div>
+    `;
+
+}
+
+
+/* =====================================================
+   TEXT COLOR
+===================================================== */
+
+function textColor(){
+
+    if(
+        !result.palette.length
+    )
+        return "#fff";
+
+
+    const bg =
+        result.palette[0].rgb;
+
+
+    const brightness =
+        luminance(
+            bg[0],
+            bg[1],
+            bg[2]
+        );
+
+
+    return brightness > 150
+        ? "#111111"
+        : "#ffffff";
+
+}
+
+
+/* =====================================================
+   COLORS
+===================================================== */
+
+function colors(){
+
+    const p =
+        result.palette;
+
+
+    return {
+
+        background:
+            p[0]?.hex ||
+            "#0b0d12",
+
+        surface:
+            p[1]?.hex ||
+            "#151821",
+
+        accent:
+            p[2]?.hex ||
+            "#8b5cf6",
+
+        text:
+            textColor()
+
+    };
+
+}
+
+
+/* =====================================================
+   HTML GENERATOR
+===================================================== */
+
+function generateHTML(){
+
+    const c =
+        colors();
+
+
+    const sidebar =
+        result.elements
+        .some(
+            x =>
+                x.type ===
+                "sidebar"
+        );
+
+
+    const button =
+        result.elements
+        .some(
+            x =>
+                x.type ===
+                "button"
+        );
+
+
+    const visionObjects =
+        (result.vision||[])
+        .filter(
+            x =>
+                x.score>=45
+        )
+        .slice(0,5);
+
+
+    return `
+
+<div class="px-app">
+
+    <header class="px-header">
+
+        <div class="px-logo">
+            PixelCSS
+        </div>
+
+        <nav>
+
+            <a href="#">
+                Home
+            </a>
+
+            <a href="#">
+                Projects
+            </a>
+
+            <a href="#">
+                Docs
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <div class="px-layout">
+
+        ${
+            sidebar
+            ?`
+
+            <aside class="px-sidebar">
+
+                <strong>
+                    Navigation
+                </strong>
+
+                <a href="#">
+                    Dashboard
+                </a>
+
+                <a href="#">
+                    Analytics
+                </a>
+
+                <a href="#">
+                    Settings
+                </a>
+
+            </aside>
+
+            `
+            :""
+        }
+
+
+        <main class="px-main">
+
+            <section class="px-card">
+
+                <span class="px-badge">
+                    PIXELCSS AI
+                </span>
+
+                <h1>
+                    Reconstructed Interface
+                </h1>
+
+                <p>
+                    Generated from screenshot
+                    analysis using
+                    PixelCSS.
+                </p>
+
+
+                ${
+                    button
+                    ?`
+
+                    <button class="px-button">
+                        Continue
+                    </button>
+
+                    `
+                    :""
+                }
+
+            </section>
+
+
+            ${
+                visionObjects.length
+                ?`
+
+                <section class="px-ai">
+
+                    <small>
+                        AI DETECTIONS
+                    </small>
+
+                    ${
+                        visionObjects
+                        .map(
+                            x => `
+
+                            <div class="px-ai-item">
+
+                                <span>
+                                    ${escapeHTML(
+                                        x.label
+                                    )}
+                                </span>
+
+                                <b>
+                                    ${x.score}%
+                                </b>
+
+                            </div>
+
+                            `
+                        )
+                        .join("")
+                    }
+
+                </section>
+
+                `
+                :""
+            }
+
+        </main>
+
+    </div>
+
+
+    <footer>
+        Generated by
+        <strong>KILLERDUTCH</strong>
+    </footer>
+
+</div>
+
+`.trim();
+
+}
+
+
+/* =====================================================
+   CSS GENERATOR
+===================================================== */
+
+function generateCSS(){
+
+    const c =
+        colors();
+
+
+    const spacing =
+        Math.max(
+            8,
+            result.radius
+        );
+
+
+    const radius =
+        result.radius;
+
+
+    return `
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    font-family:
+        Inter,
+        system-ui,
+        sans-serif;
+
+    background:
+        ${c.background};
+
+    color:
+        ${c.text};
+}
+
+.px-app {
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    background:
+        ${c.background};
+}
+
+.px-header {
+    min-height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding:
+        ${spacing}px
+        ${spacing*2}px;
+
+    background:
+        ${c.surface};
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.1);
+}
+
+.px-logo {
+    font-size: 19px;
+    font-weight: 900;
+}
+
+.px-header nav {
+    display: flex;
+    gap: ${spacing}px;
+}
+
+.px-header a {
+    color: inherit;
+    opacity: .6;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.px-header a:hover {
+    opacity: 1;
+}
+
+.px-layout {
+    width:
+        min(1180px,100%);
+
+    flex: 1;
+
+    display: grid;
+
+    grid-template-columns:
+        ${
+            result.elements.some(
+                x =>
+                    x.type ===
+                    "sidebar"
+            )
+            ? "220px 1fr"
+            : "1fr"
+        };
+
+    gap:
+        ${spacing*2}px;
+
+    margin:
+        auto;
+
+    padding:
+        ${spacing*2}px;
+}
+
+.px-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    padding: ${spacing}px;
+
+    background:
+        ${c.surface};
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    border-radius:
+        ${radius}px;
+}
+
+.px-sidebar a {
+    padding: 8px;
+
+    color: inherit;
+    opacity: .65;
+
+    text-decoration: none;
+
+    border-radius:
+        ${Math.max(6,radius-3)}px;
+}
+
+.px-sidebar a:hover {
+    opacity: 1;
+    background:
+        rgba(255,255,255,.06);
+}
+
+.px-main {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    gap:
+        ${spacing*2}px;
+}
+
+.px-card {
+    width:
+        min(100%,560px);
+
+    padding:
+        ${spacing*2}px;
+
+    background:
+        ${c.surface};
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    border-radius:
+        ${radius}px;
+
+    box-shadow:
+        0 30px 80px
+        rgba(0,0,0,.3);
+}
+
+.px-badge {
+    display: inline-flex;
+
+    padding:
+        5px 8px;
+
+    border-radius:
+        999px;
+
+    background:
+        ${c.accent};
+
+    color:
+        white;
+
+    font-size:
+        9px;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        .08em;
+}
+
+.px-card h1 {
+    margin:
+        ${spacing}px 0 8px;
+
+    font-size:
+        clamp(28px,5vw,48px);
+
+    line-height:
+        1.02;
+
+    letter-spacing:
+        -.05em;
+}
+
+.px-card p {
+    margin:
+        0 0 ${spacing*1.5}px;
+
+    opacity:
+        .62;
+
+    line-height:
+        1.6;
+}
+
+.px-button {
+    width: 100%;
+    min-height: 46px;
+
+    border: 0;
+
+    border-radius:
+        ${Math.max(6,radius-3)}px;
+
+    background:
+        ${c.accent};
+
+    color:
+        white;
+
+    font-weight:
+        800;
+
+    cursor:
+        pointer;
+}
+
+.px-button:hover {
+    filter:
+        brightness(1.1);
+
+    transform:
+        translateY(-1px);
+}
+
+.px-ai {
+    width:
+        min(100%,560px);
+
+    padding:
+        ${spacing}px;
+
+    background:
+        ${c.surface};
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    border-radius:
+        ${radius}px;
+}
+
+.px-ai small {
+    opacity:
+        .45;
+
+    font-size:
+        9px;
+
+    font-weight:
+        800;
+}
+
+.px-ai-item {
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    padding:
+        9px 0;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.07);
+
+    font-size:
+        11px;
+}
+
+.px-ai-item:last-child {
+    border-bottom: 0;
+}
+
+.px-ai-item b {
+    color:
+        ${c.accent};
+}
+
+footer {
+    padding:
+        ${spacing}px;
+
+    opacity:
+        .4;
+
+    text-align:
+        center;
+
+    font-size:
+        10px;
+}
+
+@media(max-width:700px) {
+
+    .px-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .px-sidebar {
+        display: none;
+    }
+
+    .px-header nav {
+        display: none;
+    }
+
+}
+
+`.trim();
+
+}
+
+
+/* =====================================================
+   JSON
+===================================================== */
+
+function generateJSON(){
+
+    return JSON.stringify(
+        {
+            engine:
+                "PixelCSS 2.1",
+
+            generatedBy:
+                "KILLERDUTCH",
+
+            image:{
+                width:
+                    result.originalWidth,
+
+                height:
+                    result.originalHeight
+            },
+
+            layout:
+                result.layout,
+
+            palette:
+                result.palette,
+
+            radius:
+                result.radius,
+
+            pixelElements:
+                result.elements,
+
+            vision:
+                result.vision || [],
+
+            ocr:
+                result.ocr || []
+
+        },
+        null,
+        4
+    );
+
+}
+
+
+/* =====================================================
+   COMBINED
+===================================================== */
+
+function generateCombined(
+    html,
+    css
+){
+
+    return `<!--
+=========================================================
+ PixelCSS 2.1
+ Generated by KILLERDUTCH
+=========================================================
+-->
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width,initial-scale=1">
+
+<title>
+PixelCSS Generated UI
+</title>
+
+<style>
+
+${css}
+
+</style>
+
+</head>
+
+<body>
+
+${html}
+
+</body>
+
+</html>`;
+
+}
+
+
+/* =====================================================
+   GENERATE
+===================================================== */
+
+function generate(){
+
+    if(!result)
+        return;
+
+
+    result.html =
+        generateHTML();
+
+
+    result.css =
+        generateCSS();
+
+
+    result.json =
+        generateJSON();
+
+
+    result.combined =
+        generateCombined(
+            result.html,
+            result.css
+        );
+
+
+    showCode();
+
+    updateFrame();
+
+}
+
+
+/* =====================================================
+   CODE DISPLAY
+===================================================== */
+
+function showCode(){
+
+    if(!result){
+
+        code.textContent =
+            "// Analyze a screenshot first.";
+
+        return;
+
+    }
+
+
+    code.textContent =
+        result[activeTab] || "";
+
+}
+
+
+/* =====================================================
+   TABS
+===================================================== */
+
+document
+    .querySelectorAll(".tab")
+    .forEach(
+        tab => {
+
+            tab.onclick = () => {
+
+                document
+                    .querySelectorAll(".tab")
+                    .forEach(
+                        x =>
+                            x.classList
+                            .remove("active")
+                    );
+
+
+                tab.classList.add(
+                    "active"
+                );
+
+
+                activeTab =
+                    tab.dataset.tab;
+
+
+                showCode();
+
+            };
+
+        }
+    );
+
+
+/* =====================================================
+   COPY
+===================================================== */
+
+copyBtn.onclick =
+    async () => {
+
+        if(!result)
+            return;
+
+
+        try{
+
+            await navigator
+                .clipboard
+                .writeText(
+                    result[activeTab]
+                );
+
+
+            copyBtn.textContent =
+                "Copied ✓";
+
+
+            setTimeout(
+                () =>
+                    copyBtn.textContent =
+                        "Copy",
+                1000
+            );
+
+        }
+        catch{
+
+            alert(
+                "Clipboard access failed."
+            );
+
+        }
+
+    };
+
+
+/* =====================================================
+   FRAME
+===================================================== */
+
+function updateFrame(){
+
+    if(!result)
+        return;
+
+
+    frame.srcdoc = `
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width,initial-scale=1">
+
+<style>
+
+${result.css}
+
+</style>
+
+</head>
+
+<body>
+
+${result.html}
+
+</body>
+
+</html>
+
+`;
+
+}
+
+
+/* =====================================================
+   OPEN
+===================================================== */
+
+openBtn.onclick =
+    () => {
+
+        if(!result)
+            return;
+
+
+        const win =
+            window.open(
+                "",
+                "_blank"
+            );
+
+
+        if(!win){
+
+            alert(
+                "Popup blocked."
+            );
+
+            return;
+
+        }
+
+
+        win.document.write(
+            result.combined
+        );
+
+        win.document.close();
+
+    };
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+resetBtn.onclick =
+    () => {
+
+        if(imageURL)
+            URL.revokeObjectURL(
+                imageURL
+            );
+
+
+        imageURL=null;
+        image=null;
+        result=null;
+
+
+        fileInput.value="";
+
+        preview.src="";
+        preview.style.display="none";
+
+        drop.style.display="flex";
+
+        analyzeBtn.disabled=true;
+        aiBtn.disabled=true;
+
+        analysis.innerHTML=`
+            <div class="notice">
+                Upload a screenshot to start PixelCSS.
+            </div>
+        `;
+
+        code.textContent =
+            "// Upload and analyze a screenshot.";
+
+        frame.srcdoc="";
+
+        setStatus(
+            "No image selected"
+        );
+
+    };
+
+
+/* =====================================================
+   ESCAPE
+===================================================== */
+
+function escapeHTML(value){
+
+    return String(value)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =====================================================
+   GLOBAL API
+===================================================== */
+
+window.PixelCSS = {
+
+    version:"2.1",
+
+    analyze,
+
+    runAI,
+
+    loadVision,
+
+    loadOCR,
+
+    getResult:
+        () => result
+
+};
+
+
+/* =====================================================
+   READY
+===================================================== */
+
+console.log(
+    "%cPixelCSS 2.1%c by KILLERDUTCH",
+    "font-weight:bold;color:#a78bfa",
+    "color:#888"
+);
+
+</script>
+
+</body>
+</html>
