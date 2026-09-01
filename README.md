@@ -1,67 +1,68 @@
-PixelCSS 2.1
+# PixelCSS 2.1
 
-Screenshot → Pixels → AI → HTML/CSS
+> **Screenshot → Pixel Analysis → AI → HTML/CSS**
 
-PixelCSS is a browser-based UI reconstruction tool that analyzes screenshots and turns visual information into a structured, editable HTML/CSS interface.
+PixelCSS is a browser-based screenshot analysis and UI reconstruction tool built with pure HTML, CSS, and JavaScript.
 
-It combines traditional pixel analysis with browser-side AI to make the reconstruction process more intelligent — without requiring a backend.
+It analyzes the visual structure of a screenshot, extracts useful pixel-level information, optionally uses browser-side AI for object detection and OCR, and generates an editable HTML/CSS interface from the results.
 
 ---
 
-✦ What is PixelCSS?
+## Overview
 
-Recreating a web interface from a screenshot usually means manually estimating:
+Rebuilding a web interface from a screenshot normally requires manually estimating:
 
-- colors
-- spacing
-- borders
-- radius
-- layout
-- typography
-- components
-- positioning
+- Colors
+- Spacing
+- Layout
+- Border radius
+- Components
+- Contrast
+- Positioning
+- Text
+- Visual hierarchy
 
-PixelCSS automates a large part of that process.
+PixelCSS attempts to automate part of this process.
 
-Give it a screenshot.
+Instead of treating a screenshot as a simple image, PixelCSS analyzes it as a collection of visual signals and converts those signals into structured data that can be used for code generation.
 
-PixelCSS analyzes it.
-
-Then it builds an editable HTML/CSS starting point.
-
+```text
 Screenshot
      │
      ▼
-┌─────────────────┐
-│  Pixel Analyzer │
-└────────┬────────┘
+┌──────────────────┐
+│  Pixel Analyzer  │
+└────────┬─────────┘
          │
          ├── Colors
-         ├── Geometry
          ├── Contrast
-         └── Layout
+         ├── Geometry
+         ├── Layout
+         └── Visual Features
                   │
                   ▼
-          ┌──────────────┐
-          │   Vision AI  │
-          └──────┬───────┘
-                 │
-                 ├── Objects
-                 └── Confidence
+           ┌─────────────┐
+           │  Vision AI  │
+           └──────┬──────┘
+                  │
+                  ├── Objects
+                  └── Confidence
                          │
                          ▼
-                    ┌─────────┐
-                    │   OCR   │
-                    └────┬────┘
+                    ┌────────┐
+                    │   OCR  │
+                    └────┬───┘
                          │
                          ▼
-                 Structured Result
+                Structured Results
                          │
                          ▼
-                HTML + CSS Generator
+                 HTML/CSS Generator
                          │
-                         ▼
-                    Live Preview
+                ┌────────┴────────┐
+                ▼                 ▼
+           Generated Code     Live Preview
+
 
 ---
 
@@ -69,174 +70,319 @@ Features
 
 Pixel Analysis
 
-PixelCSS extracts visual information directly from the uploaded image.
+PixelCSS performs client-side image analysis using the browser's Canvas and ImageData APIs.
 
-- Dominant color extraction
-- Average image color
-- Contrast estimation
-- Edge/change detection
-- Layout heuristics
-- Border-radius estimation
-- Basic component inference
+Current analysis includes:
 
-Browser-side AI
+Dominant color extraction
 
-PixelCSS can run AI models directly in the browser using Transformers.js.
+Average color detection
 
-Current AI pipeline:
+Contrast estimation
 
-- Object Detection
-- OCR
-- Confidence scoring
-- AI result integration
-- Browser-side model caching
+Edge/change detection
+
+Basic layout inference
+
+Border-radius estimation
+
+Component heuristics
+
+Screenshot dimensions
+
+
+
+---
+
+Browser-Side AI
+
+PixelCSS can optionally run machine-learning models directly inside the browser.
+
+The AI pipeline currently supports:
+
+Object detection
+
+Confidence scoring
+
+OCR
+
+AI result visualization
+
+Integration with generated code
+
 
 No application backend is required.
 
-HTML/CSS Generation
 
-The analyzer converts its findings into a clean editable starting point.
+---
+
+HTML & CSS Generation
+
+PixelCSS converts the analysis results into editable frontend code.
 
 Generated output includes:
 
-- HTML
-- CSS
-- Combined standalone document
-- Structured JSON
-- Live preview
+HTML
 
-The generated code is intentionally editable rather than being treated as a final pixel-perfect copy.
+CSS
+
+Combined standalone HTML
+
+Structured JSON
+
+Live preview
+
+
+The generated code is intended to be a starting point that developers can continue editing.
+
 
 ---
 
 Why PixelCSS?
 
-Most screenshot-to-code tools hide the interesting part behind an API.
+Most screenshot-to-code systems focus entirely on generating code.
 
-PixelCSS takes a different approach.
+PixelCSS takes a more experimental approach:
 
-The project is designed around the idea of:
+Pixels
+  ↓
+Analysis
+  ↓
+Structure
+  ↓
+AI
+  ↓
+Code
 
-«Understanding the pixels before generating the code.»
+The goal is not simply to generate random HTML that looks vaguely similar.
 
-Instead of blindly generating markup, PixelCSS first builds a representation of the screenshot:
+The project explores how traditional image processing, heuristics, computer vision and browser-side machine learning can work together to reconstruct a visual interface.
 
-Image
-  ↓
-Pixel data
-  ↓
-Visual features
-  ↓
-Layout inference
-  ↓
-AI detection
-  ↓
-Structured data
-  ↓
-Code generation
-
-This makes the project useful not only as a tool, but also as an experiment in browser-based computer vision and UI reconstruction.
 
 ---
 
 Architecture
 
-┌─────────────────────────────────────────┐
-│              PixelCSS 2.1               │
-├─────────────────────────────────────────┤
-│                                         │
-│  Screenshot                             │
-│      │                                  │
-│      ▼                                  │
-│  Canvas / ImageData                     │
-│      │                                  │
-│      ├───────────────┐                  │
-│      ▼               ▼                  │
-│ Pixel Analysis    Vision AI             │
-│      │               │                  │
-│      │               ├── Objects        │
-│      │               └── Confidence     │
-│      │                                  │
-│      └──────────┐                       │
-│                 ▼                       │
-│                OCR                      │
-│                 │                       │
-│                 ▼                       │
-│          Structured Result              │
-│                 │                       │
-│                 ▼                       │
-│          HTML/CSS Generator             │
-│                 │                       │
-│          ┌──────┴──────┐                │
-│          ▼             ▼                │
-│        Code        Live Preview         │
-│                                         │
-└─────────────────────────────────────────┘
+┌──────────────────────────────────────────────┐
+│                  PixelCSS                    │
+├──────────────────────────────────────────────┤
+│                                              │
+│                 Screenshot                   │
+│                      │                       │
+│                      ▼                       │
+│                Canvas / Pixels               │
+│                      │                       │
+│          ┌───────────┴───────────┐           │
+│          ▼                       ▼           │
+│    Pixel Analyzer             Vision AI      │
+│          │                       │           │
+│          │                 Object Detection  │
+│          │                       │           │
+│          └───────────┬───────────┘           │
+│                      ▼                       │
+│                     OCR                      │
+│                      │                       │
+│                      ▼                       │
+│              Structured Results              │
+│                      │                       │
+│                      ▼                       │
+│               Code Generator                 │
+│                      │                       │
+│              ┌───────┴───────┐               │
+│              ▼               ▼               │
+│            HTML             CSS              │
+│              │               │               │
+│              └───────┬───────┘               │
+│                      ▼                       │
+│                 Live Preview                 │
+│                                              │
+└──────────────────────────────────────────────┘
+
 
 ---
 
 Tech Stack
 
-PixelCSS is intentionally lightweight.
+Technology	Purpose
 
-Technology| Purpose
-HTML5| Application structure
-CSS3| Interface & generated styling
-JavaScript| Core engine
-Canvas API| Pixel processing
-ImageData API| Raw pixel analysis
-Transformers.js| Browser-side ML
-DETR| Object detection
-TrOCR| OCR
-WebAssembly| Local model execution
+HTML5	Application structure
+CSS3	UI and generated styling
+JavaScript	Core application logic
+Canvas API	Image processing
+ImageData API	Pixel-level analysis
+Transformers.js	Browser-side machine learning
+DETR	Object detection
+TrOCR	OCR
+WebAssembly	Local model execution
 
-No framework is required.
 
-No build system is required.
-
-No database is required.
-
-No backend is required for the core application.
 
 ---
 
 AI Models
 
-PixelCSS currently uses browser-compatible models through Transformers.js.
+PixelCSS uses browser-compatible models through Transformers.js.
 
 Object Detection
 
 Xenova/detr-resnet-50
 
-Used to identify visual objects and provide bounding-box information with confidence scores.
+Used for detecting objects inside the uploaded screenshot and returning bounding-box information and confidence scores.
 
 OCR
 
 Xenova/trocr-small-printed
 
-Used for extracting text from visual content.
+Used for extracting text from image content.
 
-Models are downloaded when required and can be cached by the browser.
+> AI models are downloaded when required and may be cached by the browser.
 
-«Model performance depends heavily on the screenshot, device, browser, and available resources.»
+
+
+
+---
+
+How It Works
+
+1. Upload a Screenshot
+
+Drop an image into PixelCSS or select one using the upload button.
+
+Supported formats include:
+
+PNG
+JPG
+JPEG
+WEBP
+
+
+---
+
+2. Pixel Analysis
+
+PixelCSS reads the screenshot through the browser's Canvas API and extracts visual information.
+
+Example:
+
+{
+    "width": 1440,
+    "height": 900,
+    "average": "#101218",
+    "contrast": 182,
+    "radius": 12
+}
+
+
+---
+
+3. Layout Inference
+
+The analyzer examines visual changes across horizontal and vertical regions to estimate the overall layout.
+
+Possible results include:
+
+centered
+stacked
+multi-column
+sidebar / content
+
+
+---
+
+4. Vision AI
+
+The optional AI engine analyzes the image and returns detected objects with confidence scores.
+
+Example:
+
+{
+    "label": "laptop",
+    "score": 87,
+    "box": {
+        "xmin": 320,
+        "ymin": 180,
+        "xmax": 920,
+        "ymax": 620
+    }
+}
+
+
+---
+
+5. OCR
+
+The OCR layer attempts to extract visible text from the screenshot.
+
+Example:
+
+{
+    "text": "Continue"
+}
+
+
+---
+
+6. Code Generation
+
+The collected information is passed into the HTML/CSS generator.
+
+The result can be viewed, copied and edited directly from the interface.
+
+
+---
+
+Example Output
+
+A simplified PixelCSS result can look like this:
+
+{
+    "engine": "PixelCSS 2.1",
+    "generatedBy": "KILLERDUTCH",
+
+    "image": {
+        "width": 1440,
+        "height": 900
+    },
+
+    "layout": {
+        "type": "sidebar / content",
+        "confidence": 76
+    },
+
+    "radius": 12,
+
+    "palette": [
+        "#0b0d12",
+        "#151821",
+        "#8b5cf6"
+    ],
+
+    "pixelElements": [
+        {
+            "type": "header",
+            "confidence": 80
+        },
+        {
+            "type": "sidebar",
+            "confidence": 76
+        },
+        {
+            "type": "card",
+            "confidence": 78
+        }
+    ]
+}
+
 
 ---
 
 Running Locally
 
-Because browser ML modules and model loading work better through an HTTP server, don't open the project directly with:
-
-file://
-
-Instead, use a local server.
+PixelCSS is a client-side application, but running it through an HTTP server is recommended, especially when browser-side AI models are being loaded.
 
 VS Code
 
-Install Live Server, then open:
-
-index.html
-
-with Live Server.
+Open the project with VS Code and run index.html using a local server such as Live Server.
 
 Python
 
@@ -246,194 +392,12 @@ Then open:
 
 http://localhost:8000
 
----
-
-Usage
-
-1. Upload
-
-Drop a screenshot into PixelCSS or select one manually.
-
-2. Analyze
-
-Run the pixel analyzer.
-
-PixelCSS extracts:
-
-Colors
-Geometry
-Contrast
-Layout
-Components
-Radius
-
-3. Run AI
-
-Run the browser-side AI pipeline.
-
-The system performs:
-
-Vision Detection
-        +
-OCR
-
-4. Inspect
-
-Review the generated:
-
-- HTML
-- CSS
-- JSON
-- Combined document
-
-5. Export
-
-Copy the generated code and continue editing it like a normal web project.
-
----
-
-Example Result
-
-A screenshot might produce a structure similar to:
-
-{
-    "engine": "PixelCSS 2.1",
-    "generatedBy": "KILLERDUTCH",
-    "image": {
-        "width": 1440,
-        "height": 900
-    },
-    "layout": {
-        "type": "sidebar / content",
-        "confidence": 76
-    },
-    "radius": 12,
-    "palette": [
-        "#0b0d12",
-        "#151821",
-        "#8b5cf6"
-    ],
-    "vision": [
-        {
-            "label": "laptop",
-            "score": 87
-        }
-    ]
-}
-
-That structured representation is then used by the code generator.
-
----
-
-Project Goals
-
-PixelCSS is not trying to replace a professional frontend developer.
-
-The goal is different:
-
-Reduce the distance between a visual reference and editable code.
-
-The project explores how much of a UI can be reconstructed using:
-
-- deterministic image analysis
-- heuristics
-- computer vision
-- OCR
-- structured data
-- procedural code generation
-
----
-
-Limitations
-
-PixelCSS is an experimental reconstruction engine.
-
-It will not perfectly reproduce every screenshot.
-
-Complex interfaces can contain information that cannot reliably be inferred from pixels alone.
-
-For example:
-
-- exact font identification
-- hidden DOM structure
-- semantic HTML
-- responsive behavior
-- interactions
-- animations
-- inaccessible content
-- complex nested layouts
-
-AI detection can also produce incorrect classifications.
-
-The generated code should therefore be treated as a starting point, not a guaranteed final implementation.
-
----
-
-Roadmap
-
-2.2
-
-- [ ] Better UI component detection
-- [ ] Improved text region detection
-- [ ] Better bounding-box reconstruction
-- [ ] More accurate spacing inference
-- [ ] Typography estimation
-- [ ] Better responsive layout generation
-
-2.5
-
-- [ ] Component tree generation
-- [ ] Grid/Flexbox inference
-- [ ] Improved CSS reconstruction
-- [ ] Region-based OCR
-- [ ] Smarter visual similarity scoring
-
-3.0
-
-- [ ] Advanced Vision-Language model
-- [ ] Semantic UI understanding
-- [ ] Component-level reconstruction
-- [ ] Multi-pass code generation
-- [ ] Visual diff / similarity mode
-
----
-
-Performance
-
-AI models can be relatively large.
-
-The first AI execution may take longer because the browser needs to download and initialize the models.
-
-After caching, subsequent executions can be significantly faster.
-
-Performance depends on:
-
-- CPU
-- RAM
-- browser
-- screenshot resolution
-- WebAssembly performance
-- model size
-
-For large screenshots, PixelCSS downsamples the image for some pixel-analysis operations to keep processing reasonable.
-
----
-
-Privacy
-
-PixelCSS is designed around browser-side processing.
-
-Screenshots are processed locally by the application.
-
-There is no required application backend for the core analyzer.
-
-AI inference is also designed to run locally in the browser.
-
-This means the project can be useful for analyzing screenshots without automatically uploading them to a remote application server.
 
 ---
 
 Project Structure
+
+The current version intentionally uses a single HTML file.
 
 PixelCSS/
 │
@@ -441,43 +405,201 @@ PixelCSS/
 │
 └── README.md
 
-The current version intentionally keeps the project as a single-file application.
+Everything required by the application is contained inside index.html, while external browser-side AI libraries and models are loaded when needed.
 
-This makes it easy to:
 
-- fork
-- inspect
-- modify
-- experiment with
-- deploy
+---
+
+Performance
+
+Browser-side AI can be resource-intensive.
+
+The first AI execution may take longer because the browser needs to download and initialize the models.
+
+Performance depends on:
+
+CPU
+
+RAM
+
+Browser
+
+Screenshot resolution
+
+WebAssembly performance
+
+Model size
+
+
+PixelCSS also performs some analysis on a reduced-resolution copy of the screenshot to keep pixel processing manageable.
+
+
+---
+
+Privacy
+
+PixelCSS is designed around client-side processing.
+
+The core application does not require an application backend to process screenshots.
+
+Screenshots can be analyzed directly inside the browser, while the AI pipeline is also designed to run locally.
+
+> Note: external libraries and model files are loaded from their configured CDNs when required.
+
+
+
+
+---
+
+Limitations
+
+PixelCSS is an experimental reconstruction tool.
+
+It does not guarantee a pixel-perfect recreation of every interface.
+
+Some information cannot reliably be recovered from a screenshot alone.
+
+For example:
+
+Exact DOM structure
+
+Original CSS architecture
+
+Semantic HTML
+
+Exact font files
+
+Responsive breakpoints
+
+Hidden elements
+
+JavaScript behavior
+
+Animations
+
+Hover states
+
+Component state
+
+Complex nested layouts
+
+
+AI models may also produce incorrect classifications.
+
+Generated code should therefore be treated as an editable starting point rather than a guaranteed final implementation.
+
+
+---
+
+Roadmap
+
+PixelCSS 2.2
+
+[ ] Improved component detection
+
+[ ] Better text-region detection
+
+[ ] More accurate spacing analysis
+
+[ ] Font estimation
+
+[ ] Improved bounding-box reconstruction
+
+[ ] Better color clustering
+
+
+PixelCSS 2.5
+
+[ ] Flexbox inference
+
+[ ] CSS Grid inference
+
+[ ] Component tree generation
+
+[ ] Region-based OCR
+
+[ ] Visual similarity scoring
+
+[ ] Better responsive reconstruction
+
+
+PixelCSS 3.0
+
+[ ] Advanced Vision-Language Model
+
+[ ] Semantic UI understanding
+
+[ ] Multi-pass code generation
+
+[ ] Component-level reconstruction
+
+[ ] Visual diff system
+
+[ ] Screenshot-to-component pipeline
+
+
+
+---
+
+Development Philosophy
+
+PixelCSS is built around a simple idea:
+
+> Don't just look at the screenshot. Analyze it.
+
+
+
+The project intentionally combines deterministic algorithms with AI rather than depending entirely on a generative model.
+
+Traditional Analysis
+        +
+Computer Vision
+        +
+OCR
+        +
+Browser ML
+        ↓
+   PixelCSS
+
+This makes the project useful as both a practical frontend utility and an experiment in browser-based computer vision.
+
 
 ---
 
 Contributing
 
-Ideas, improvements, experiments and pull requests are welcome.
+Contributions, ideas and experiments are welcome.
 
-If you're interested in:
+Areas that could benefit from experimentation include:
 
-- computer vision
-- frontend tooling
-- browser ML
-- CSS generation
-- OCR
-- image processing
-- UI reconstruction
+Computer vision
 
-this project is a good place to experiment.
+Image processing
+
+Browser ML
+
+OCR
+
+CSS generation
+
+UI reconstruction
+
+Layout detection
+
+Frontend tooling
+
+
+If you find a bug or have an idea for improving the reconstruction pipeline, feel free to open an issue or submit a pull request.
+
 
 ---
 
 License
 
-Add your preferred license here.
+This project is currently released without a specified license.
 
-For example:
+If you plan to make the repository publicly reusable, adding an appropriate open-source license such as MIT is recommended.
 
-MIT License
 
 ---
 
@@ -485,22 +607,30 @@ Author
 
 KILLERDUTCH
 
-Built as an experiment in combining frontend engineering, pixel analysis and browser-based machine learning.
+Built with:
 
 HTML
 CSS
 JavaScript
-+
+Canvas
 Computer Vision
-+
-AI
-=
-PixelCSS
+OCR
+Browser-side AI
+
 
 ---
 
+Final
+
+PixelCSS is an experiment in turning visual interfaces into structured frontend code.
+
+SEE THE PIXELS.
+UNDERSTAND THE STRUCTURE.
+GENERATE THE CODE.
+
 <p align="center">PixelCSS 2.1
 
-<sub>See the pixels. Understand the structure. Generate the code.</sub>
+<br><sub>Created by KILLERDUTCH</sub>
 
 </p>
+```
